@@ -1,0 +1,91 @@
+\documentclass{article}
+\usepackage{natbib}
+
+<<echo=FALSE>>=
+packages<-c('dplyr','stringr','tidytext','wordcloud','gutenbergr','tm')
+knitr::write_bib(packages,file='packages.bib')
+@
+
+
+\begin{document}
+
+\title{Peter Pan Wordcloud}
+\author{Tiffany Gonzalez}
+\maketitle
+
+\begin{abstract}
+Sir James Matthew Barrie is a Scottish novelist and playwright. He is best known for creating the play, in which later became a famously known Disney movie, Peter Pan. Peter Pan is about an ageless boy and Tinkerbell, who is a fairy and companion to Peter Pan. These two have many adventures in the fantasy place, Neverland. This is the perfect playwright for Halloween because it is the time to dress up as fictional or non-fictional characters. In this article, we will be using Sir J.M. Barrie's famous playwright 'Peter Pan or The Boy Who Wouldn't Grow Up' to create a wordcloud. Let's bring in all of the packages we will be working with in this article.
+
+<<message=FALSE,warning=FALSE>>=
+library(dplyr)
+library(tm)
+library(tidytext)
+library(wordcloud)
+library(stringr)
+library(gutenbergr)
+library(knitr)
+@
+
+
+\end{abstract}
+
+\section{The Gutenbergr Package}
+There is a package within R, gutenbergr, that gives access to domain works in the Project Gutenberg collection. We have this package installed above. As mentioned previously, we will be focusing on just the book of Peter Pan. To find the book, including Peter Pan, we can run the following code:  To just work with one work, out of all the works, you may call the following function and store the result as follows:
+
+<<message=FALSE,warning=FALSE>>=
+library(gutenbergr)
+library(stringr)
+gutenberg_works(str_detect(title,'Peter Pan'))
+@
+
+When this code is run, the output gives more than one Peter Pan book. However we know the author is J.M. Barrie, so we can use his gutenberg\_ID number, and store the result:
+
+<<>>=
+library(gutenbergr)
+peter_pan<-gutenberg_download(39755)
+@
+
+\section{The Wordcloud}
+To make the wordcloud, we first have to break up the lines in the book into words. We can use a function from the tidytext package for this. We can run the following code, and store it into words\_df:
+
+<<message=FALSE,warning=FALSE>>=
+library(tidytext)
+words_df<-peter_pan%>%
+  unnest_tokens(word,text)
+
+words_df
+@
+
+But within the column of words, we have common, unimportant words such as `the` `a` `was`... These words are referred to as stop words. We can remove these, with the stop\_words data frame and dplyr:
+
+<<message=FALSE,warning=FALSE>>=
+words_df<-words_df%>%
+  filter(!word %in% stop_words$word)
+
+words_df
+@
+
+A wordcloud is a picture composed of words, in which the size of each word is based off of its frequency.Therefore, we need to calculate the frequencies of the the words in our dataframe. Again, we can use standard dplyr techniques for this:
+
+<<message=FALSE,warning=FALSE>>=
+library(dplyr)
+word_freq<-words_df%>%
+  group_by(word)%>%
+  summarize(count=n())
+
+word_freq
+@
+
+It's time to create the final product... The Wordcloud!
+
+<<message=FALSE,warning=FALSE>>=
+library(wordcloud)
+wordcloud(word_freq$word,word_freq$count,min.freq=5)
+@
+
+\bibliographystyle{apa}
+\bibliography{article,packages}
+\nocite{*}
+
+
+\end{document}
