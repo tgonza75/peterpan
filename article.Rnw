@@ -14,7 +14,7 @@ knitr::write_bib(packages,file='packages.bib')
 \maketitle
 
 \begin{abstract}
-Sir James Matthew Barrie is a Scottish novelist and playwright. He is best known for creating the play, in which later became a famously known Disney movie, Peter Pan. Peter Pan is about an ageless boy and Tinkerbell, who is a fairy and companion to Peter Pan. These two have many adventures in the fantasy place, Neverland. This is the perfect playwright for Halloween because it is the time to dress up as fictional or non-fictional characters. In this article, we will be using Sir J.M. Barrie's famous playwright 'Peter Pan or The Boy Who Wouldn't Grow Up' to create a wordcloud. Let's bring in all of the packages we will be working with in this article.
+Sir James Matthew Barrie is a Scottish novelist and playwright. He is best known for creating the play, in which later became a famously known Disney movie, Peter Pan. Peter Pan is about an ageless boy and Tinkerbell, who is a fairy and companion to Peter Pan. These two have many adventures in the fantasy place, Neverland. This is the perfect playwright for Halloween because it is the time to dress up as fictional or non-fictional characters \citep{Barrie}. In this article, we will be using Sir J.M. Barrie's famous playwright 'Peter Pan or The Boy Who Wouldn't Grow Up' to create a wordcloud.\footnote{A wordcloud will be later defined as the article continues} Let's bring in all of the packages we will be working with in this article.
 
 <<message=FALSE,warning=FALSE>>=
 library(dplyr)
